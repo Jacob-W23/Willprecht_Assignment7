@@ -188,6 +188,22 @@ app.post('/deleteCourseById', async (req,res)=>{
     }
 });
 
+//remove student from classes
+app.post('/removeStudentFromClasses', async (req,res)=>{
+    try{
+        let student = await Student.findOne({studentID: req.body.studentID});
+
+        if(student) {
+            await Student.deleteOne({studentID: req.body.studentID});
+            return res.status(200).json("{Message: Student deleted}")
+        } else {
+            return res.status(200).json("{Message: No student deleted - query null}")
+        }
+    } catch {
+        return res.status(500).json("{Message: Failed to delete student}");
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server Started on port ${PORT}`);
 })
